@@ -1,0 +1,81 @@
+version: '3'
+services:
+
+  # Client-Next.js
+  client:
+    container_name: rtcg-client
+    # user: node
+    build:
+      # context: client
+      dockerfile: Dockerfile
+    ports:
+      - 3000:3000
+    tty: true
+    volumes:
+      - ./app/:/home/node/src/
+    command: sh -c "yarn start"
+
+  # # DB-Postgresql
+  # db:
+  #   container_name: actg-db
+  #   user: postgres
+  #   build:
+  #     context: db
+  #     dockerfile: Dockerfile
+  #     args:
+  #       - GROUP_ID=${USER_ID}
+  #       - GROUP_NAME=postgres
+  #       - USER_ID=${GROUP_ID}
+  #       - USER_NAME=postgres
+  #   restart: always
+  #   # Postgres default port is 5432
+  #   expose:
+  #     - 5432
+  #   environment:
+  #     - POSTGRES_USER=${PG_USER}
+  #     - POSTGRES_PASSWORD=${PG_PASSWORD}
+  #     - PGDATA=/var/lib/postgresql/data/pgdata
+  #     - POSTGRES_INITDB_ARGS=--encoding=UTF-8 --locale=C
+  #   volumes:
+  #     # initialize database
+  #     # - ./db/initdb:/docker-entry-point-initdb.d
+  #     # store data
+  #     - ./db/data:/var/lib/postgresql/data
+
+  # # pgAdmin4
+  # pgadmin4:
+  #   container_name: actg-pgadmin4
+  #   user: pgadmin
+  #   build:
+  #     context: pgadmin4
+  #     dockerfile: Dockerfile
+  #     args:
+  #       - GROUP_ID=${GROUP_ID}
+  #       - GROUP_NAME=pgadmin
+  #       - USER_ID=${USER_ID}
+  #       - USER_NAME=pgadmin
+  #   restart: always
+  #   # pgAdmin4 default port is 80 or 443 
+  #   ports:
+  #     - 12000:80
+  #   environment:
+  #     - PGADMIN_DEFAULT_EMAIL=${PGADMIN_EMAIL}
+  #     - PGADMIN_DEFAULT_PASSWORD=${PGADMIN_PASSWORD}
+  #     - PGPASSWORD=${PG_PASSWORD}
+  #   volumes:
+  #     - ./pgadmin4/pgadmin:/var/lib/pgadmin
+  #   depends_on:
+  #     - db
+  #   # profiles:
+  #   #   - debug
+
+  #   # Webserver-nginx
+  # nginx:
+  #   container_name: actg-nginx
+  #   user: nginx
+  #   build:
+  #     context: nginx
+  #     dockerfile: Dockerfile
+  #   tty: true
+  #   ports:
+  #     - 8080:8080
